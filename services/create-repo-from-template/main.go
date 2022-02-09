@@ -39,8 +39,10 @@ func main() {
 	}
 	fmt.Printf("%T\n", template)
 
-	r := &github.Repository{Name: name, Private: private, Description: description, TemplateRepository: template}
-	repo, _, err := client.Repositories.Create(ctx, "", r)
+	//r := &github.Repository{Name: name, Private: private, Description: description, TemplateRepository: template}
+	owner := "njdaniel"
+	t := &github.TemplateRepoRequest{Name: name, Owner: &owner, Private: private}
+	repo, _, err := client.Repositories.CreateFromTemplate(ctx, "njdaniel", "api-template", t)
 	if err != nil {
 		log.Fatal(err)
 	}
