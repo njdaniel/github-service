@@ -1,0 +1,21 @@
+#Builder
+FROM golang:1.17.6 as builder
+ENV GO111MODULE=on
+
+#Copy repo
+RUN mkdir -p /service
+WORKDIR /service
+COPY . .
+
+#Build
+WORKDIR /service/createfromtemplate
+RUN go build
+
+
+#==============
+#Run
+FROM alpine:3.12
+COPY --from=builder /service/createfromtemplate/createfromtemplate /app/createfromtemplate
+WORKDIR /app
+#CMD ["exe", "param1", "param2"]
+CMD ["createfromtemplate"]
